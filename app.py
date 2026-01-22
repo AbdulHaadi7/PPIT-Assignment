@@ -2,7 +2,6 @@ import streamlit as st
 import easyocr
 from PIL import Image
 import numpy as np
-import cv2
 
 st.set_page_config(page_title="Handwritten Notes to Digital Text")
 
@@ -17,19 +16,10 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_column_width=True)
 
-    st.write("🔍 Processing image...")
-
-    img = np.array(image)
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-
-    thresh = cv2.adaptiveThreshold(
-        gray, 255,
-        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY, 11, 2
-    )
+    st.write("🔍 Extracting text...")
 
     reader = easyocr.Reader(['en'], gpu=False)
-    text = reader.readtext(thresh, detail=0, paragraph=True)
+    text = reader.readtext(np.array(image), detail=0)
 
     extracted_text = "\n".join(text)
 
