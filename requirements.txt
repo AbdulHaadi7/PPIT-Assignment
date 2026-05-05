@@ -1,5 +1,6 @@
-streamlit
-easyocr
-pillow
+gradio
+groq
+python-docx
+Pillow
+surya-ocr
 numpy
-opencv-python-headless
